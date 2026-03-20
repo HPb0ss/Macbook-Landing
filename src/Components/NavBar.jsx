@@ -16,10 +16,14 @@ const NavBar = () => {
 
                 <div className="flex-center gap-3">
                     <button>
-                        <img src="/search.svg" alt="Search" />
+                        <img
+                            src="/search.svg"
+                            alt="Search"
+                            aria-label="Search"
+                        />
                     </button>
                     <button>
-                        <img src="/cart.svg" alt="Cart" />
+                        <img src="/cart.svg" alt="Cart" aria-label="Cart" s />
                     </button>
                 </div>
             </nav>
