@@ -23,7 +23,7 @@ const NavBar = () => {
                         />
                     </button>
                     <button>
-                        <img src="/cart.svg" alt="Cart" aria-label="Cart" s />
+                        <img src="/cart.svg" alt="Cart" aria-label="Cart" />
                     </button>
                 </div>
             </nav>
