@@ -15,6 +15,19 @@ const ModelScroll = () => {
     const isMobile = useMediaQuery({ query: "(max-width: 1024)" });
     const { setTexture } = useMacbookStore();
 
+    const getVersionedVideoPath = (videoPath, index) =>
+        `${videoPath}?v=${index + 1}`;
+
+    const setFeatureTexture = (index) => {
+        setTexture(
+            getVersionedVideoPath(featureSequence[index].videoPath, index),
+        );
+    };
+
+    useEffect(() => {
+        setFeatureTexture(0);
+    }, [setTexture]);
+
     // Pre-load all feature videos during component mount
     useEffect(() => {
         featureSequence.forEach((feature) => {
@@ -23,7 +36,7 @@ const ModelScroll = () => {
             Object.assign(v, {
                 src: feature.videoPath,
                 muted: true,
-                playsInLine: true,
+                playsInline: true,
                 preload: "auto",
                 crossOrigin: "anonymous",
             });
@@ -46,9 +59,10 @@ const ModelScroll = () => {
         const timeline = gsap.timeline({
             scrollTrigger: {
                 trigger: "#f-canvas",
-                start: "top center",
+                start: "top bottom",
                 end: "bottom top",
                 scrub: 1,
+                onLeaveBack: () => setFeatureTexture(0),
             },
         });
 
@@ -60,15 +74,15 @@ const ModelScroll = () => {
         }
 
         timeline
-            .call(() => setTexture("/videos/feature-1.mp4"))
+            .call(() => setFeatureTexture(0))
             .to(".box1", { opacity: 1, y: 0, delay: 1 })
-            .call(() => setTexture("/videos/feature-2.mp4"))
+            .call(() => setFeatureTexture(1))
             .to(".box2", { opacity: 1, y: 0 })
-            .call(() => setTexture("/videos/feature-3.mp4"))
+            .call(() => setFeatureTexture(2))
             .to(".box3", { opacity: 1, y: 0 })
-            .call(() => setTexture("/videos/feature-4.mp4"))
+            .call(() => setFeatureTexture(3))
             .to(".box4", { opacity: 1, y: 0 })
-            .call(() => setTexture("/videos/feature-5.mp4"))
+            .call(() => setFeatureTexture(4))
             .to(".box5", { opacity: 1, y: 0 });
     }, []);
 
@@ -101,7 +115,7 @@ const Features = () => {
                 <StudioLights />
                 <ambientLight intensity={0.5} />
 
-                <ModelScroll />
+                <ModelScroll position={[0, 0, 4]} />
             </Canvas>
 
             <div className="absolute inset-0">

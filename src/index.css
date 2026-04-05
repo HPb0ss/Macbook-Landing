@@ -21,10 +21,17 @@
 }
 
 * {
-    scrollbar-color: var(--color-dark-100) var(--color-black);
+    scrollbar-color: transparent transparent;
+    scrollbar-width: none;
+}
+
+*::-webkit-scrollbar {
+    width: 0;
+    height: 0;
 }
 
 :root {
+    --page-gutter: clamp(1.5rem, 4vw, 4rem);
     --gradient-color: linear-gradient(
         to bottom right,
         #0894ff 0%,
@@ -46,17 +53,23 @@
 }
 
 html {
-    width: 100vw;
+    width: 100%;
     overflow-x: hidden;
     scroll-behavior: smooth;
 }
 
 body {
-    width: 100vw;
+    width: 100%;
     overflow-x: hidden;
+    box-sizing: border-box;
+    padding-inline: var(--page-gutter);
     background-color: #000;
     color: var(--color-dark-100);
     font-family: var(--font-semibold);
+}
+
+#root {
+    min-height: 100vh;
 }
 
 @utility flex-center {
@@ -89,10 +102,11 @@ body {
 
 @layer components {
     header {
-        @apply w-screen fixed top-0 left-0 z-50 flex-center bg-black min-h-[7vh];
+        @apply fixed top-0 left-0 z-50 flex-center bg-black min-h-[7vh] w-full;
 
         nav {
-            @apply container mx-auto flex-between px-5 2xl:px-0;
+            @apply w-full max-w-7xl mx-auto flex-between;
+            padding-inline: var(--page-gutter);
 
             img {
                 @apply cursor-pointer hover:-translate-y-0.5 transition-all duration-300 ease-in-out;
@@ -119,7 +133,7 @@ body {
             @apply relative z-10 col-center lg:translate-y-16;
 
             h1 {
-                @apply font-semibold lg:text-3xl 2xl:text-5xl text-white;
+                @apply font-semibold lg:text-3xl 2xl:text-5xl text-white pt-10;
             }
 
             img {
