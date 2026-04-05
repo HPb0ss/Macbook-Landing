@@ -29,8 +29,7 @@ const ModelSwitcher = ({ scale, isMobile }) => {
     const smallMacbookRef = useRef();
     const largeMacbookRef = useRef();
 
-    const showLargeMacbook = scale === 0.08;
-
+    const showLargeMacbook = Math.abs(scale - 0.08) < 0.001;
     useGSAP(() => {
         if (showLargeMacbook) {
             moveGroup(smallMacbookRef.current, -OFFSET_DISTANCE);
@@ -47,9 +46,6 @@ const ModelSwitcher = ({ scale, isMobile }) => {
         }
     }, [scale]);
 
-    if (isMobile) {
-        scale -= 0.03;
-    }
 
     const controlsConfig = {
         snap: true,
