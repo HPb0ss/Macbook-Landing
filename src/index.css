@@ -62,7 +62,7 @@ body {
     width: 100%;
     overflow-x: hidden;
     box-sizing: border-box;
-    padding-inline: var(--page-gutter);
+    padding-inline: 0;
     background-color: #000;
     color: var(--color-dark-100);
     font-family: var(--font-semibold);
@@ -106,7 +106,7 @@ body {
 
         nav {
             @apply w-full max-w-7xl mx-auto flex-between;
-            padding-inline: var(--page-gutter);
+            padding-inline: 0;
 
             img {
                 @apply cursor-pointer hover:-translate-y-0.5 transition-all duration-300 ease-in-out;
@@ -447,5 +447,15 @@ body {
                 }
             }
         }
+    }
+}
+
+@media (min-width: 1536px) {
+    body {
+        padding-inline: var(--page-gutter);
+    }
+
+    header nav {
+        padding-inline: var(--page-gutter);
     }
 }
