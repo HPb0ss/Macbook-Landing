@@ -1,35 +1,67 @@
-import React from "react";
+import { useEffect, useRef } from "react";
 import { useMediaQuery } from "react-responsive";
 import { useGSAP } from "@gsap/react";
 import gsap from "gsap";
+import { ScrollTrigger } from "gsap/all";
 
 const Showcase = () => {
     const isTablet = useMediaQuery({ query: "(max-width: 1024px)" });
+    const showcaseRef = useRef();
+    const videoRef = useRef();
 
-    useGSAP(() => {
-        if (!isTablet) {
-            const timeline = gsap.timeline({
-                scrollTrigger: {
-                    trigger: "#showcase",
-                    start: "top top",
-                    end: "bottom top",
-                    scrub: true,
-                    pin: true,
-                },
-            });
+    useEffect(() => {
+        const video = videoRef.current;
 
-            timeline
-                .to(".mask img", {
-                    transform: "scale(1.1)",
-                })
-                .to(".content", { opacity: 1, y: 0, ease: "power1.in" });
-        }
-    }, [isTablet]);
+        if (!video) return undefined;
+
+        const refreshScrollTrigger = () => ScrollTrigger.refresh();
+
+        video.addEventListener("loadedmetadata", refreshScrollTrigger);
+        video.addEventListener("canplay", refreshScrollTrigger);
+
+        return () => {
+            video.removeEventListener("loadedmetadata", refreshScrollTrigger);
+            video.removeEventListener("canplay", refreshScrollTrigger);
+        };
+    }, []);
+
+    useGSAP(
+        () => {
+            if (!isTablet) {
+                const timeline = gsap.timeline({
+                    scrollTrigger: {
+                        trigger: showcaseRef.current,
+                        start: "top top",
+                        end: "bottom top",
+                        scrub: true,
+                        pin: true,
+                        invalidateOnRefresh: true,
+                    },
+                });
+
+                timeline
+                    .to(".mask img", {
+                        transform: "scale(1.1)",
+                    })
+                    .to(".content", { opacity: 1, y: 0, ease: "power1.in" });
+            }
+
+            requestAnimationFrame(() => ScrollTrigger.refresh());
+        },
+        { scope: showcaseRef, dependencies: [isTablet], revertOnUpdate: true },
+    );
 
     return (
-        <section id="showcase">
+        <section id="showcase" ref={showcaseRef}>
             <div className="media">
-                <video src="/videos/game.mp4" loop autoPlay muted playsInline />
+                <video
+                    ref={videoRef}
+                    src="/videos/game.mp4"
+                    loop
+                    autoPlay
+                    muted
+                    playsInline
+                />
                 <div className="mask">
                     <img src="/mask-logo.svg" alt="Rocket Chip logo mask" />
                 </div>
